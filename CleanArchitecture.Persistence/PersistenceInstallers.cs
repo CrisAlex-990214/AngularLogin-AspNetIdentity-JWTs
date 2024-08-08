@@ -1,13 +1,22 @@
-﻿using CleanArchitecture.Application.Interfaces;
+﻿using CleanArchitecture.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Persistence
 {
     public static class PersistenceInstallers
     {
-        public static void AddPersistenceServices(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IDatabaseService, DatabaseService>();
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddDbContext<AppDbContext>(opts =>
+                opts.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+
+            return services;
         }
     }
 }

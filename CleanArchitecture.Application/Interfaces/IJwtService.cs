@@ -2,8 +2,8 @@
 
 namespace CleanArchitecture.Application.Interfaces
 {
-    public interface IDatabaseService
+    public interface IJwtService
     {
-        List<User> GetUsers();
+        string GenerateToken(User user);
     }
 }
